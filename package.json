@@ -1,0 +1,22 @@
+{
+  "name": "node-express-midudev",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "lint": "eslint ."
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cors": "2.8.5",
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.15",
+    "standard": "16.0.4"
+  },
+  "eslintConfig": {
+    "extends": ".\\node_modules\\standard\\eslintrc.json"
+  }
+}

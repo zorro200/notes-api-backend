@@ -1,0 +1,6 @@
+[
+  {
+    "command": "yarn init",
+    "explanation": "Initialize a new project with a package.json"
+  }
+]
