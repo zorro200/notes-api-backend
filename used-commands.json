@@ -1,0 +1,7 @@
+[
+  {
+    "yarn init": "Initialize a new project with a package.json",
+    "git reset .": "Restore all the files to the unstaged (unprepared) state for their commit (undo git add (with(out) .)",
+    "git remote add origin [url.git]": "Adds the remote repository"
+  }
+]
