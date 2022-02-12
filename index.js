@@ -4,7 +4,7 @@ const app = express()
 const logger = require('./loggerMiddleware')
 
 // Middleware
-app.use(cors())
+app.use(cors()) // public
 app.use(express.json())
 app.use(logger)
 
@@ -29,14 +29,17 @@ let notes = [
   }
 ]
 
+// GET root
 app.get('/', (req, res) => {
   res.send('<h1> Hello! (☞ﾟヮﾟ)☞ </h1>')
 })
 
+// GET all notes
 app.get('/api/notes', (req, res) => {
   res.json(notes)
 })
 
+// GET one note by ID
 app.get('/api/notes/:id', (req, res) => {
   const id = Number(req.params.id)
   const note = notes.find(note => note.id === id)
@@ -48,6 +51,7 @@ app.get('/api/notes/:id', (req, res) => {
   }
 })
 
+// DELETE one note by ID
 app.delete('/api/notes/:id', (req, res) => {
   const id = Number(req.params.id)
   // We store all the notes that does not match with that one we're searching for deleting
@@ -55,6 +59,7 @@ app.delete('/api/notes/:id', (req, res) => {
   res.status(204).end()
 })
 
+// POST a note
 app.post('/api/notes', (req, res) => {
   const note = req.body
 
@@ -79,12 +84,14 @@ app.post('/api/notes', (req, res) => {
   res.status(201).json(newNote)
 })
 
+// Will be executed if none rute equals to the requested
 app.use((req, res) => {
   res.status(404).json({
     error: 'Not found'
   })
 })
 
+// DEPLOYMENT PORT or BY DEFAULT
 const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
