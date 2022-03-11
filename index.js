@@ -87,6 +87,7 @@ app.post('/api/notes', (req, res) => {
 
 // Will be executed if none rute equals to the requested
 app.use((req, res) => {
+  console.log(req.path)
   res.status(404).json({
     error: 'Not found'
   })
