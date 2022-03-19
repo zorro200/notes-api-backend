@@ -1,7 +1,11 @@
+// MongoDB connection
+require('./mongo')
+
 const express = require('express')
 const cors = require('cors')
 const app = express()
 const logger = require('./loggerMiddleware')
+const Note = require('./models/Note')
 
 // Middleware
 app.use(cors()) // public
@@ -9,26 +13,7 @@ app.use(cors()) // public
 app.use(express.json())
 app.use(logger)
 
-let notes = [
-  {
-    id: 1,
-    content: 'Tengo que estudiar las clases del FullStack Bootcamp',
-    date: '2019-05-30T18:39:34.091Z',
-    important: false
-  },
-  {
-    id: 2,
-    content: 'Me tengo que suscribir a @midudev en YT',
-    date: '2019-05-30T18:39:34.091Z',
-    important: true
-  },
-  {
-    id: 3,
-    content: 'Repasar los retos de JS de Midudev',
-    date: '2019-05-30T19:20:14.298Z',
-    important: true
-  }
-]
+// let notes = []
 
 // GET root
 app.get('/', (req, res) => {
@@ -37,7 +22,9 @@ app.get('/', (req, res) => {
 
 // GET all notes
 app.get('/api/notes', (req, res) => {
-  res.json(notes)
+  Note.find({}).then(notes => {
+    res.json(notes)
+  })
 })
 
 // GET one note by ID
