@@ -14,8 +14,6 @@ app.use(cors()) // public
 app.use(express.json())
 app.use(logger)
 
-let notes = []
-
 // GET root
 app.get('/', (req, res) => {
   res.send('<h1> Hello! (☞ﾟヮﾟ)☞ </h1>')
@@ -44,11 +42,12 @@ app.get('/api/notes/:id', (req, res, next) => {
 })
 
 // DELETE one note by ID
-app.delete('/api/notes/:id', (req, res) => {
-  const id = Number(req.params.id)
-  // We store all the notes that does not match with that one we're searching for deleting
-  notes = notes.filter(note => note.id !== id)
-  res.status(204).end()
+app.delete('/api/notes/:id', (req, res, next) => {
+  const { id } = req.params
+
+  Note.findByIdAndDelete(id).then(result => {
+    res.status(204).end()
+  }).catch(err => next(err))
 })
 
 // POST a note
