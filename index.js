@@ -1,3 +1,4 @@
+// Enables process.env
 require('dotenv').config()
 require('./mongo')
 
@@ -28,15 +29,18 @@ app.get('/api/notes', (req, res) => {
 })
 
 // GET one note by ID
-app.get('/api/notes/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const note = notes.find(note => note.id === id)
+app.get('/api/notes/:id', (req, res, next) => {
+  const id = req.params.id
 
-  if (note) {
-    res.json(note)
-  } else {
-    res.status(404).end()
-  }
+  Note.findById(id).then(note => {
+    if (note) {
+      res.status(302).json(note)
+    } else {
+      res.status(404).end()
+    }
+  }).catch(err => {
+    next(err)
+  })
 })
 
 // DELETE one note by ID
@@ -57,27 +61,27 @@ app.post('/api/notes', (req, res) => {
     })
   }
 
-  const ids = notes.map(note => note.id)
-  const maxId = Math.max(...ids)
-
-  const newNote = {
-    id: maxId + 1,
+  const newNote = new Note({
     content: note.content,
-    important: typeof note.important !== 'undefined' ? note.important : false,
-    date: new Date().toISOString()
-  }
+    date: new Date().toISOString(),
+    important: typeof note.important === 'undefined' ? false : note.important
+  })
 
-  notes = [...notes, newNote]
-
-  res.status(201).json(newNote)
+  // Save into the DB
+  newNote.save().then(savedNote => {
+    res.status(201).json(savedNote)
+  })
 })
 
 // Will be executed if none rute equals to the requested
-app.use((req, res) => {
+app.use((err, req, res, next) => {
+  console.error(err)
   console.log(req.path)
-  res.status(404).json({
-    error: 'Not found'
-  })
+  if (err.name === 'CastError') {
+    res.status(400).send({ error: 'id used is malformed' })
+  } else {
+    res.status(500).end()
+  }
 })
 
 // DEPLOYMENT PORT or BY DEFAULT
