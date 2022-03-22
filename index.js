@@ -1,3 +1,4 @@
+require('dotenv').config()
 require('./mongo')
 
 const express = require('express')
@@ -80,7 +81,7 @@ app.use((req, res) => {
 })
 
 // DEPLOYMENT PORT or BY DEFAULT
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

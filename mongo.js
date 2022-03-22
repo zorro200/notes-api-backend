@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
-const password = require('./password')
 
-const connectionString = `mongodb+srv://adminL:${password}@cluster0.nuam7.mongodb.net/midudb?retryWrites=true&w=majority`
+const connectionString = process.env.MONGO_DB_URI
 
 // Connection to Mongo
 mongoose.connect(connectionString)
