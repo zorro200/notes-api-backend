@@ -7,6 +7,16 @@ const noteSchema = new Schema({
   important: Boolean
 })
 
+// Configuring how the Schema needs to parse to JSON
+// In this case we add an id without '_' and delete by default features
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
 // model's name => Connect to the collection 'name+s' in the db (or create it).
 // The model's name initial letter must always be capitalized
 const Note = model('Note', noteSchema)
