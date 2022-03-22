@@ -8,7 +8,7 @@ const noteSchema = new Schema({
 })
 
 // model's name => Connect to the collection 'name+s' in the db (or create it).
-// The model's name initial letter must always be in capitalized
+// The model's name initial letter must always be capitalized
 const Note = model('Note', noteSchema)
 
 module.exports = Note
