@@ -7,6 +7,8 @@ const cors = require('cors')
 const app = express()
 const logger = require('./loggerMiddleware')
 const Note = require('./models/Note')
+const notFound = require('./middleware/notFound')
+const handleErrors = require('./middleware/handleErrors')
 
 // Middleware
 app.use(cors()) // public
@@ -90,20 +92,8 @@ app.post('/api/notes', (req, res) => {
 
 // Errors handler middlewares (always after the others paths)
 // Will be executed if none rute equals to the requested
-app.use((req, res) => {
-  console.error(res.error)
-  res.status(404).end()
-})
-
-app.use((err, req, res, next) => {
-  console.error(err)
-  console.log(req.path)
-  if (err.name === 'CastError') {
-    res.status(400).send({ error: 'id used is malformed' })
-  } else {
-    res.status(500).end()
-  }
-})
+app.use(notFound)
+app.use(handleErrors)
 
 // DEPLOYMENT PORT or BY DEFAULT
 const PORT = process.env.PORT
