@@ -26,7 +26,7 @@ app.get('/api/notes', (req, res) => {
   })
 })
 
-// GET one note by ID
+// GET note by ID
 app.get('/api/notes/:id', (req, res, next) => {
   const id = req.params.id
 
@@ -41,7 +41,23 @@ app.get('/api/notes/:id', (req, res, next) => {
   })
 })
 
-// DELETE one note by ID
+// UPDATE note by ID
+app.put('/api/notes/:id', (req, res, next) => {
+  const { id } = req.params
+  const note = req.body
+
+  const newNoteInfo = {
+    content: note.content,
+    important: note.important
+  }
+
+  Note.findByIdAndUpdate(id, newNoteInfo, { new: true })
+    .then(result => {
+      res.json(result)
+    }).catch(err => next(err))
+})
+
+// DELETE note by ID
 app.delete('/api/notes/:id', (req, res, next) => {
   const { id } = req.params
 
