@@ -88,7 +88,13 @@ app.post('/api/notes', (req, res) => {
   })
 })
 
+// Errors handler middlewares (always after the others paths)
 // Will be executed if none rute equals to the requested
+app.use((req, res) => {
+  console.error(res.error)
+  res.status(404).end()
+})
+
 app.use((err, req, res, next) => {
   console.error(err)
   console.log(req.path)
