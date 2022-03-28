@@ -10,7 +10,7 @@ const Note = require('./models/Note')
 const notFound = require('./middleware/notFound')
 const handleErrors = require('./middleware/handleErrors')
 
-// Middleware
+// Middlewares - The middlewares' order is always important
 app.use(cors()) // public
 // Parses the object that the request has received (req.body) to JSON
 app.use(express.json())
@@ -38,9 +38,7 @@ app.get('/api/notes/:id', (req, res, next) => {
     } else {
       res.status(404).end()
     }
-  }).catch(err => {
-    next(err)
-  })
+  }).catch(err => next(err))
 })
 
 // UPDATE note by ID
@@ -63,7 +61,7 @@ app.put('/api/notes/:id', (req, res, next) => {
 app.delete('/api/notes/:id', (req, res, next) => {
   const { id } = req.params
 
-  Note.findByIdAndDelete(id).then(result => {
+  Note.findByIdAndDelete(id).then(() => {
     res.status(204).end()
   }).catch(err => next(err))
 })
@@ -90,7 +88,7 @@ app.post('/api/notes', (req, res) => {
   })
 })
 
-// Errors handler middlewares (always after the others paths)
+// Errors handler middlewares (always after the others main paths)
 // Will be executed if none rute equals to the requested
 app.use(notFound)
 app.use(handleErrors)
