@@ -33,11 +33,10 @@ app.get('/api/notes/:id', (req, res, next) => {
   const id = req.params.id
 
   Note.findById(id).then(note => {
-    if (note) {
-      res.status(302).json(note)
-    } else {
-      res.status(404).end()
-    }
+    note
+      ? res.status(302).json(note)
+      : next()
+    // Next path that handles "error" as its first argument
   }).catch(err => next(err))
 })
 
