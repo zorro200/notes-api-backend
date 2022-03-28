@@ -14,6 +14,7 @@ const handleErrors = require('./middleware/handleErrors')
 app.use(cors()) // public
 // Parses the object that the request has received (req.body) to JSON
 app.use(express.json())
+app.use('/images', express.static('images'))
 app.use(logger)
 
 // GET root
