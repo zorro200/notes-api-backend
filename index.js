@@ -6,9 +6,10 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const logger = require('./loggerMiddleware')
-const Note = require('./models/Note')
 const notFound = require('./middleware/notFound')
 const handleErrors = require('./middleware/handleErrors')
+const notesRouter = require('./controllers/notes')
+const usersRouter = require('./controllers/users')
 
 // Middlewares - The middlewares' order is always important
 app.use(cors()) // public
@@ -22,71 +23,8 @@ app.get('/', (req, res) => {
   res.send('<h1> Hello! (☞ﾟヮﾟ)☞ </h1>')
 })
 
-// GET all notes
-app.get('/api/notes', (req, res) => {
-  Note.find({}).then(notes => {
-    res.json(notes)
-  })
-})
-
-// GET note by ID
-app.get('/api/notes/:id', (req, res, next) => {
-  const id = req.params.id
-
-  Note.findById(id).then(note => {
-    note
-      ? res.status(302).json(note)
-      : next()
-    // Next path that handles "error" as its first argument
-  }).catch(err => next(err))
-})
-
-// UPDATE note by ID
-app.put('/api/notes/:id', (req, res, next) => {
-  const { id } = req.params
-  const note = req.body
-
-  const newNoteInfo = {
-    content: note.content,
-    important: note.important
-  }
-
-  Note.findByIdAndUpdate(id, newNoteInfo, { new: true })
-    .then(result => {
-      res.json(result)
-    }).catch(err => next(err))
-})
-
-// DELETE note by ID
-app.delete('/api/notes/:id', (req, res, next) => {
-  const { id } = req.params
-
-  Note.findByIdAndDelete(id).then(() => {
-    res.status(204).end()
-  }).catch(err => next(err))
-})
-
-// POST a note
-app.post('/api/notes', (req, res) => {
-  const note = req.body
-
-  if (!note || !note.content) {
-    return res.status(400).json({
-      error: 'note.content is missing'
-    })
-  }
-
-  const newNote = new Note({
-    content: note.content,
-    date: new Date().toISOString(),
-    important: typeof note.important === 'undefined' ? false : note.important
-  })
-
-  // Save into the DB
-  newNote.save().then(savedNote => {
-    res.status(201).json(savedNote)
-  })
-})
+app.use('/api/notes', notesRouter)
+app.use('/api/users', usersRouter)
 
 // Errors handler middlewares (always after the others main paths)
 // Will be executed if none rute equals to the requested
