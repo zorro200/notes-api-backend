@@ -26,24 +26,3 @@ noteSchema.set('toJSON', {
 const Note = model('Note', noteSchema)
 
 module.exports = Note
-
-// Note.find({}).then(result => {
-//   console.log(result)
-//   mongoose.connection.close()
-// })
-
-// const note = new Note({
-//   content: 'MongoDB es increíble, Midu',
-//   date: new Date(),
-//   important: true
-// })
-
-// // Save new note into the DB
-// note.save()
-//   .then(result => {
-//     console.log(result)
-//     mongoose.connection.close()
-//   })
-//   .catch(err => {
-//     console.log(err)
-//   })
