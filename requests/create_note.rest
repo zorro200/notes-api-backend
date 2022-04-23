@@ -8,10 +8,10 @@ Content-Type: application/json
 
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNWVjY2UzYTQ5NjdmOTRkMGQxNTNmZiIsIm5pY2siOiJTaG8iLCJpYXQiOjE2NTA3Mzc2MjgsImV4cCI6MTY1MTM0MjQyOH0.txdY__LmMNvjuBqXOzVnXDjp3As6-jBeoDN_MRvdqNk
 
 // Request's body
 {
-  "content": "NOVA NOTA",
-  "important": true,
-  "userId": "625ecce3a4967f94d0d153ff"
+  "content": "NOVA NOTA CON TOKEN!",
+  "important": true
 }

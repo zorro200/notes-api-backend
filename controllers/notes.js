@@ -1,6 +1,7 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/Note')
 const User = require('../models/User')
+const userExtractor = require('../middleware/userExtractor')
 
 // GET all notes
 notesRouter.get('/', async (req, res) => {
@@ -24,7 +25,7 @@ notesRouter.get('/:id', (req, res, next) => {
 })
 
 // UPDATE note by ID
-notesRouter.put('/:id', (req, res, next) => {
+notesRouter.put('/:id', userExtractor, (req, res, next) => {
   const { id } = req.params
   const note = req.body
 
@@ -40,7 +41,7 @@ notesRouter.put('/:id', (req, res, next) => {
 })
 
 // DELETE note by ID
-notesRouter.delete('/:id', (req, res, next) => {
+notesRouter.delete('/:id', userExtractor, (req, res, next) => {
   const { id } = req.params
 
   Note.findByIdAndDelete(id).then(() => {
@@ -49,8 +50,10 @@ notesRouter.delete('/:id', (req, res, next) => {
 })
 
 // POST a note
-notesRouter.post('/', async (req, res) => {
-  const { content, important, userId } = req.body
+notesRouter.post('/', userExtractor, async (req, res) => {
+  const { content, important } = req.body
+
+  const { userId } = req
 
   if (!content) {
     return res.status(400).json({
@@ -58,6 +61,7 @@ notesRouter.post('/', async (req, res) => {
     })
   }
 
+  // Find the user through the login token
   const user = await User.findById(userId)
 
   const newNote = new Note({
