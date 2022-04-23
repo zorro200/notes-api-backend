@@ -1,0 +1,19 @@
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+// Correct login test
+{
+  "nick": "Sho",
+  "password": "lashopassword"
+}
+
+###
+
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+// Incorrect login test
+{
+  "nick": "Sho",
+  "password": "lasho"
+}
