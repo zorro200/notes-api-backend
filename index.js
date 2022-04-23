@@ -10,6 +10,7 @@ const notFound = require('./middleware/notFound')
 const handleErrors = require('./middleware/handleErrors')
 const notesRouter = require('./controllers/notes')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 // Middlewares - The middlewares' order is always important
 app.use(cors()) // public
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/notes', notesRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
 // Errors handler middlewares (always after the others main paths)
 // Will be executed if none rute equals to the requested
