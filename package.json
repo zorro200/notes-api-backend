@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
+    "test": "NODE_ENV=test PORT=1234 jest --verbose tests/user.test.js",
     "lint": "eslint ."
   },
   "license": "MIT",
@@ -13,7 +14,8 @@
     "cors": "2.8.5",
     "dotenv": "16.0.0",
     "express": "^4.17.2",
-    "mongoose": "^6.2.7"
+    "mongoose": "^6.2.7",
+    "mongoose-unique-validator": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "2.0.15",
