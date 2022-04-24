@@ -19,7 +19,7 @@ loginRouter.post('/', async (req, res) => {
     })
   }
 
-  // Info for token (sesion) and creation
+  // Info for token (sesion) and creation of it
   const userForToken = {
     id: user._id,
     nick: user.nick
